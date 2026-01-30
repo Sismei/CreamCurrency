@@ -16,6 +16,7 @@ CreamCurrency is an advanced multi-currency economy plugin for Minecraft servers
 ## Super Lightweight
 
 We got this spark report from over 150 players!
+
 <img width="331" height="83" alt="image" src="https://github.com/user-attachments/assets/92f87f01-e575-4160-88ac-ed3764539ad7" />
 
 
