@@ -1,0 +1,24 @@
+name: CreamCurrency
+version: '1.1.0'
+main: com.agevate.creamcurrency.CreamCurrency
+api-version: '1.20'
+prefix: CreamCurrency
+authors: [Sismei]
+description: Advanced multi-currency economy plugin with Vault support.
+softdepend: [Vault, PlaceholderAPI]
+
+commands:
+  money:
+    description: Manage your primary currency balance.
+    aliases: [para]
+  currency:
+    description: Manage secondary currencies.
+  creamcurrency:
+    description: Admin commands for CreamCurrency.
+    permission: creamcurrency.admin
+    usage: /creamcurrency reload
+
+permissions:
+  creamcurrency.admin:
+    description: Allows full access to CreamCurrency administration.
+    default: op

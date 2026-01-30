@@ -1,0 +1,94 @@
+# CreamCurrency Configuration
+
+# The ID of the primary currency that hooks into Vault.
+# This must match a filename in the currencies folder (e.g. 'money' for money.yml)
+primary-currency: money
+
+database:
+  # Type can be SQLITE or MYSQL
+  type: SQLITE
+  
+  mysql:
+    host: localhost
+    port: 3306
+    database: creamcurrency
+    username: root
+    password: password
+    ssl: false
+    pool-size: 10
+
+# Performance settings
+cache:
+  # Whether to use in-memory caching (recommended)
+  enabled: true
+
+# Top leaderboard settings
+top:
+  limit: 10
+
+# Transaction logging
+logging:
+  # Enable/disable transaction logging
+  enabled: true
+  # Log files are stored in plugins/CreamCurrency/logs/
+  # Format: transactions-YYYY-MM-DD.log
+
+messages:
+  prefix: "&eCreamCurrency &8» &7"
+  reload: "&aYapılandırma ve para birimleri yenilendi."
+  no-permission: "&cBunu yapmak için yetkiniz yok."
+  insufficient-funds: "&cYetersiz bakiye."
+  player-not-found: "&cOyuncu bulunamadı."
+  currency-not-found: "&cPara birimi bulunamadı."
+  pay-disabled: "&cBu para birimi için ödemeler devre dışı bırakıldı."
+  balance: "&7Bakiye: &f%balance%"
+  pay-locked: "&cBu oyuncu ödemeleri kapattı."
+  pay-toggle-on: "&aÖdemeler başarıyla açıldı."
+  pay-toggle-off: "&cÖdemeler başarıyla kapatıldı."
+  
+  # Pay messages - supports chat and actionbar
+  pay:
+    # Message sent to the sender (chat)
+    sent-chat: "&a%player% kişisine %amount% gönderildi."
+    # Actionbar message for sender (leave empty to disable)
+    sent-actionbar: "&a-&f%amount% &7→ &e%player%"
+    # Message sent to the receiver (chat)
+    received-chat: "&a%player% kişisinden %amount% aldınız."
+    # Actionbar message for receiver (leave empty to disable)
+    received-actionbar: "&a+&f%amount% &7← &e%player%"
+
+    # Sound settings
+    sounds:
+      # Format: "SOUND_NAME, volume, pitch"
+      # Set to "" to disable
+      sent: "ENTITY_EXPERIENCE_ORB_PICKUP, 1.0, 1.0"
+      received: "ENTITY_EXPERIENCE_ORB_PICKUP, 1.0, 1.2"
+
+  # Command errors
+  currency-not-found-cmd: "&cKomut için para birimi bulunamadı: /%label%"
+  console-not-allowed: "&cKonsol bir oyuncu belirtmelidir."
+  only-players: "&cSadece oyuncular ödeme yapabilir."
+  cannot-pay-self: "&cKendine ödeme yapamazsın."
+  invalid-amount: "&cGeçersiz miktar."
+  amount-positive: "&cMiktar pozitif olmalıdır."
+
+  # Usage messages
+  pay-usage: "&cKullanım: /%currency% pay <oyuncu> <miktar>"
+  give-usage: "&cKullanım: /%currency% give <oyuncu> <miktar>"
+  set-usage: "&cKullanım: /%currency% set <oyuncu> <miktar>"
+  remove-usage: "&cKullanım: /%currency% remove <oyuncu> <miktar>"
+  
+  # Admin success messages
+  admin-give-success: "&a%player% kişisine %amount% verildi. &7(Yeni: %new_balance%)"
+  admin-set-success: "&a%player% kişisinin bakiyesi %amount% yapıldı."
+  admin-remove-success: "&a%player% kişisinden %amount% silindi. &7(Yeni: %new_balance%)"
+  
+  # Help messages
+  help:
+    header: "&e&l----- /%label% -----"
+    balance: "&6/%label% &8- &7Bakiyeni gör"
+    pay: "&6/%label% pay <oyuncu> <miktar> &8- &7Para gönder"
+    top: "&6/%label% top &8- &7Sıralamayı gör"
+    admin-give: "&6/%label% give <oyuncu> <miktar>"
+    admin-set: "&6/%label% set <oyuncu> <miktar>"
+    admin-remove: "&6/%label% remove <oyuncu> <miktar>"

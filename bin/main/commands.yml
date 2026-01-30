@@ -1,0 +1,45 @@
+# CreamCurrency Command Configuration
+# Customize subcommand names and aliases here
+
+# Subcommand aliases - you can add multiple aliases for each subcommand
+subcommands:
+  # Balance check (default subcommand when no args)
+  balance:
+    aliases: ["bal", "bakiye", "b"]
+  
+  # Pay another player
+  pay:
+    aliases: ["gonder", "transfer", "ver"]
+  
+  # Top leaderboard
+  top:
+    aliases: ["baltop", "leaderboard", "siralama", "top10"]
+  
+  # Admin: Give currency
+  give:
+    aliases: ["ekle", "add"]
+  
+  # Admin: Set balance
+  set:
+    aliases: ["ayarla"]
+  
+  # Admin: Remove currency
+  remove:
+    aliases: ["cikar", "take", "al"]
+  
+  # Toggle payments
+  toggle:
+    aliases: ["kapasit", "ac"]
+
+# Command messages (you can also put these in config.yml under messages)
+command-messages:
+  top-header: "&e&l----- %currency% Sıralaması (İlk %limit%) -----"
+  top-entry: "%color%#%rank% &f%player% &8- &a%balance%"
+  top-empty: "&7Henüz veri bulunamadı."
+  
+  # Rank colors for top command
+  top-colors:
+    1: "&6&l"  # Gold for 1st
+    2: "&f&l"  # White for 2nd  
+    3: "&c&l"  # Red for 3rd
+    default: "&7"  # Gray for others

@@ -1,0 +1,17 @@
+# Money Currency Configuration
+name: "Money"
+symbol: "$"
+symbol-before: true
+start-balance: 0.0
+format: "#,##0.00"
+
+# Whether players can pay each other with this currency
+payable: true
+
+# Message shown when viewing another player's balance
+# Placeholders: %player% = player name, %balance% = formatted balance
+balance-other: "&7%player%'nin Parası: &f%balance%"
+
+# Command aliases (creates /para command automatically)
+aliases:
+  - "para"
