@@ -13,6 +13,11 @@ CreamCurrency is an advanced multi-currency economy plugin for Minecraft servers
 * **Advanced Notifications:** Customizable chat messages, action bar notifications, and sound effects for transfers.
 * **Rich API:** Easy-to-use API for developers to integrate CreamCurrency into their own plugins.
 
+## Super Lightweight
+
+<img width="331" height="83" alt="image" src="https://github.com/user-attachments/assets/92f87f01-e575-4160-88ac-ed3764539ad7" />
+
+
 ## 🛠 Installation
 
 1.  Download the latest version of **CreamCurrency**.
@@ -49,3 +54,4 @@ double balance = CreamCurrencyAPI.getBalance(uuid, "money");`
 
 `// Deposit money
 CreamCurrencyAPI.deposit(uuid, "gems", 500);`
+
