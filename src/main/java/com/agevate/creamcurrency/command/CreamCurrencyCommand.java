@@ -52,9 +52,11 @@ public class CreamCurrencyCommand implements CommandExecutor, TabCompleter {
             case "cache":
                 if (args.length > 1 && args[1].equalsIgnoreCase("clear")) {
                     plugin.getPlayerDataDAO().getCache().clear();
-                    sender.sendMessage(TextUtils.colorize("&aBalance cache cleared."));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.cache-cleared",
+                            "&aBakiye önbelleği temizlendi.")));
                 } else {
-                    sender.sendMessage(TextUtils.colorize("&eUsage: /creamcurrency cache clear"));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.cache-usage",
+                            "&eKullanım: /creamcurrency cache clear")));
                 }
                 break;
             default:
@@ -66,9 +68,12 @@ public class CreamCurrencyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage(TextUtils.colorize("&e&lCreamCurrency &8- &7Admin Commands"));
-        sender.sendMessage(TextUtils.colorize("&6/creamcurrency reload &8- &7Reload configuration"));
-        sender.sendMessage(TextUtils.colorize("&6/creamcurrency cache clear &8- &7Clear balance cache"));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.creamcurrency-admin-header",
+                "&e&lCreamCurrency &8- &7Admin Komutları")));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.creamcurrency-reload-help",
+                "&6/creamcurrency reload &8- &7Yapılandırmayı yenile")));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.creamcurrency-cache-help",
+                "&6/creamcurrency cache clear &8- &7Bakiye önbelleğini temizle")));
     }
 
     @Override

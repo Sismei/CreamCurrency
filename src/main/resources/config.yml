@@ -68,15 +68,37 @@ messages:
   currency-not-found-cmd: "&cKomut için para birimi bulunamadı: /%label%"
   console-not-allowed: "&cKonsol bir oyuncu belirtmelidir."
   only-players: "&cSadece oyuncular ödeme yapabilir."
+  only-players-toggle: "&cSadece oyuncular ödeme ayarlarını değiştirebilir."
   cannot-pay-self: "&cKendine ödeme yapamazsın."
   invalid-amount: "&cGeçersiz miktar."
   amount-positive: "&cMiktar pozitif olmalıdır."
+  primary-currency-not-found: "&cBirincil para birimi yapılandırılmamış."
+  money-usage: "&cKullanım: /money veya /money pay <oyuncu> <miktar>"
+  money-usage-full: "&cKullanım: /money balance veya /money pay <oyuncu> <miktar>"
 
   # Usage messages
   pay-usage: "&cKullanım: /%currency% pay <oyuncu> <miktar>"
   give-usage: "&cKullanım: /%currency% give <oyuncu> <miktar>"
   set-usage: "&cKullanım: /%currency% set <oyuncu> <miktar>"
   remove-usage: "&cKullanım: /%currency% remove <oyuncu> <miktar>"
+  
+  # Currency command usage messages
+  currency-balance-usage: "&cKullanım: /currency balance <para_birimi> [oyuncu]"
+  currency-pay-usage: "&cKullanım: /currency pay <para_birimi> <oyuncu> <miktar>"
+  currency-give-usage: "&cKullanım: /currency give <para_birimi> <oyuncu> <miktar>"
+  currency-set-usage: "&cKullanım: /currency set <para_birimi> <oyuncu> <miktar>"
+  currency-remove-usage: "&cKullanım: /currency remove <para_birimi> <oyuncu> <miktar>"
+  
+  # Cache messages
+  cache-cleared: "&aBakiye önbelleği temizlendi."
+  cache-usage: "&eKullanım: /creamcurrency cache clear"
+  
+  # Headers
+  loaded-currencies-header: "&e&lYüklü Para Birimleri:"
+  creamcurrency-header: "&e&l----- CreamCurrency -----"
+  creamcurrency-admin-header: "&e&lCreamCurrency &8- &7Admin Komutları"
+  creamcurrency-reload-help: "&6/creamcurrency reload &8- &7Yapılandırmayı yenile"
+  creamcurrency-cache-help: "&6/creamcurrency cache clear &8- &7Bakiye önbelleğini temizle"
   
   # Admin success messages
   admin-give-success: "&a%player% kişisine %amount% verildi. &7(Yeni: %new_balance%)"
@@ -92,3 +114,10 @@ messages:
     admin-give: "&6/%label% give <oyuncu> <miktar>"
     admin-set: "&6/%label% set <oyuncu> <miktar>"
     admin-remove: "&6/%label% remove <oyuncu> <miktar>"
+    currency-balance: "&6/currency balance <para_birimi> [oyuncu]"
+    currency-pay: "&6/currency pay <para_birimi> <oyuncu> <miktar>"
+    currency-top: "&6/currency top <para_birimi>"
+    currency-give: "&6/currency give <para_birimi> <oyuncu> <miktar>"
+    currency-set: "&6/currency set <para_birimi> <oyuncu> <miktar>"
+    currency-remove: "&6/currency remove <para_birimi> <oyuncu> <miktar>"
+    currency-list: "&6/currency list"

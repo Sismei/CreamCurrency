@@ -71,7 +71,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
             }
             case "toggle" -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(TextUtils.colorize("&cOnly players can toggle payments."));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.only-players-toggle",
+                            "&cSadece oyuncular ödeme ayarlarını değiştirebilir.")));
                     return true;
                 }
                 handleToggle(player);
@@ -93,7 +94,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
 
         if (currency == null) {
             if (args.length <= offset) {
-                sender.sendMessage(TextUtils.colorize("&cUsage: /currency balance <currency> [player]"));
+                sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.currency-balance-usage",
+                        "&cKullanım: /currency balance <para_birimi> [oyuncu]")));
                 return;
             }
             currency = plugin.getCurrencyManager().getCurrency(args[offset]);
@@ -116,7 +118,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         } else if (sender instanceof Player player) {
             target = player;
         } else {
-            sender.sendMessage(TextUtils.colorize("&cConsole must specify a player."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.console-not-allowed",
+                    "&cKonsol bir oyuncu belirtmelidir.")));
             return;
         }
 
@@ -130,7 +133,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
 
     private void handlePay(CommandSender sender, Currency preResolved, String[] args, int offset) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(TextUtils.colorize("&cOnly players can pay."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.only-players",
+                    "&cSadece oyuncular ödeme yapabilir.")));
             return;
         }
 
@@ -140,7 +144,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         // If currency not resolved, read it from args
         if (currency == null) {
             if (args.length <= nextArg) {
-                sender.sendMessage(TextUtils.colorize("&cUsage: /currency pay <currency> <player> <amount>"));
+                sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.currency-pay-usage",
+                        "&cKullanım: /currency pay <para_birimi> <oyuncu> <miktar>")));
                 return;
             }
             currency = plugin.getCurrencyManager().getCurrency(args[nextArg]);
@@ -155,8 +160,9 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         // Now we expect <player> <amount>
         if (args.length < nextArg + 2) {
             sender.sendMessage(TextUtils
-                    .colorize("&cUsage: " + (preResolved != null ? "/" + preResolved.getId() + " pay <player> <amount>"
-                            : "/currency pay <currency> <player> <amount>")));
+                    .colorize(plugin.getConfig()
+                            .getString("messages.pay-usage", "&cKullanım: /%currency% pay <oyuncu> <miktar>")
+                            .replace("%currency%", preResolved != null ? preResolved.getId() : "currency")));
             return;
         }
 
@@ -170,7 +176,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (target.getUniqueId().equals(player.getUniqueId())) {
-            sender.sendMessage(TextUtils.colorize("&cYou cannot pay yourself."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.cannot-pay-self",
+                    "&cKendine ödeme yapamazsın.")));
             return;
         }
 
@@ -178,12 +185,14 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         try {
             amount = NumberUtils.parseAmount(args[nextArg]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(TextUtils.colorize("&cInvalid amount."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.invalid-amount",
+                    "&cGeçersiz miktar.")));
             return;
         }
 
         if (amount <= 0) {
-            sender.sendMessage(TextUtils.colorize("&cAmount must be positive."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.amount-positive",
+                    "&cMiktar pozitif olmalıdır.")));
             return;
         }
 
@@ -309,7 +318,7 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         final int dbOffset = (page - 1) * limit;
 
         // Async Fetch
-        sender.sendMessage(TextUtils.colorize("&7Loading..."));
+        sender.sendMessage(TextUtils.colorize(plugin.getCommandConfig().getTopLoading()));
 
         plugin.getPlayerDataDAO().getTotalBalance(finalCurrency.getId()).thenAccept(totalBalance -> {
             plugin.getPlayerDataDAO().getTopBalancesWithNames(finalCurrency.getId(), limit, dbOffset)
@@ -325,7 +334,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
                             // For now just Total Supply as requested
                             sender.sendMessage(TextUtils.colorize(header));
                             sender.sendMessage(
-                                    TextUtils.colorize("&7Total Economy: &a" + finalCurrency.format(totalBalance)));
+                                    TextUtils.colorize(plugin.getCommandConfig().getTopTotal()
+                                            .replace("%amount%", finalCurrency.format(totalBalance))));
                             // To do strictly "Player Count" I'd need separate count query.
                             // I will assume for now just total balance is enough or add a quick count query
                             // if strictly needed.
@@ -350,7 +360,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
                                     rank++;
                                 }
                             }
-                            sender.sendMessage(TextUtils.colorize("&7Page: " + finalPage));
+                            sender.sendMessage(TextUtils.colorize(plugin.getCommandConfig().getTopPage()
+                                    .replace("%page%", String.valueOf(finalPage))));
                         });
                     });
         });
@@ -373,7 +384,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length < 4) {
-            sender.sendMessage(TextUtils.colorize("&cUsage: /currency give <currency> <player> <amount>"));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.currency-give-usage",
+                    "&cKullanım: /currency give <para_birimi> <oyuncu> <miktar>")));
             return;
         }
 
@@ -389,14 +401,18 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         try {
             amount = NumberUtils.parseAmount(args[3]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(TextUtils.colorize("&cInvalid amount."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.invalid-amount",
+                    "&cGeçersiz miktar.")));
             return;
         }
 
         plugin.getPlayerDataDAO().addBalance(target.getUniqueId(), currency.getId(), amount)
                 .thenAccept(newBalance -> {
-                    sender.sendMessage(TextUtils.colorize("&aGave " + currency.format(amount) +
-                            " to " + target.getName() + " &7(New: " + currency.format(newBalance) + ")"));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.admin-give-success",
+                            "&a%player% kişisine %amount% verildi. &7(Yeni: %new_balance%)")
+                            .replace("%player%", target.getName() != null ? target.getName() : "Unknown")
+                            .replace("%amount%", currency.format(amount))
+                            .replace("%new_balance%", currency.format(newBalance))));
                     plugin.getTransactionLogger().logAdminGive(sender.getName(), target.getUniqueId(), target.getName(),
                             currency.getId(), amount, newBalance);
                 });
@@ -409,7 +425,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
             return;
         }
         if (args.length < 4) {
-            sender.sendMessage(TextUtils.colorize("&cUsage: /currency set <currency> <player> <amount>"));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.currency-set-usage",
+                    "&cKullanım: /currency set <para_birimi> <oyuncu> <miktar>")));
             return;
         }
 
@@ -425,7 +442,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         try {
             amount = NumberUtils.parseAmount(args[3]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(TextUtils.colorize("&cInvalid amount."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.invalid-amount",
+                    "&cGeçersiz miktar.")));
             return;
         }
 
@@ -433,8 +451,10 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         plugin.getPlayerDataDAO().getBalance(target.getUniqueId(), currency.getId()).thenAccept(oldBal -> {
             plugin.getPlayerDataDAO().setBalance(target.getUniqueId(), currency.getId(), amount)
                     .thenRun(() -> {
-                        sender.sendMessage(TextUtils.colorize("&aSet " + target.getName() +
-                                "'s balance to " + currency.format(amount)));
+                        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.admin-set-success",
+                                "&a%player% kişisinin bakiyesi %amount% yapıldı.")
+                                .replace("%player%", target.getName() != null ? target.getName() : "Unknown")
+                                .replace("%amount%", currency.format(amount))));
                         plugin.getTransactionLogger().logAdminSet(sender.getName(), target.getUniqueId(),
                                 target.getName(), currency.getId(), oldBal, amount);
                     });
@@ -449,7 +469,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length < 4) {
-            sender.sendMessage(TextUtils.colorize("&cUsage: /currency remove <currency> <player> <amount>"));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.currency-remove-usage",
+                    "&cKullanım: /currency remove <para_birimi> <oyuncu> <miktar>")));
             return;
         }
 
@@ -465,7 +486,8 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
         try {
             amount = NumberUtils.parseAmount(args[3]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(TextUtils.colorize("&cInvalid amount."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.invalid-amount",
+                    "&cGeçersiz miktar.")));
             return;
         }
 
@@ -474,8 +496,12 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
                     double newBalance = Math.max(0, current - amount);
                     plugin.getPlayerDataDAO().setBalance(target.getUniqueId(), currency.getId(), newBalance)
                             .thenRun(() -> {
-                                sender.sendMessage(TextUtils.colorize("&aRemoved " + currency.format(amount) +
-                                        " from " + target.getName() + " &7(New: " + currency.format(newBalance) + ")"));
+                                sender.sendMessage(TextUtils.colorize(plugin.getConfig()
+                                        .getString("messages.admin-remove-success",
+                                                "&a%player% kişisinden %amount% silindi. &7(Yeni: %new_balance%)")
+                                        .replace("%player%", target.getName() != null ? target.getName() : "Unknown")
+                                        .replace("%amount%", currency.format(amount))
+                                        .replace("%new_balance%", currency.format(newBalance))));
                                 plugin.getTransactionLogger().logAdminRemove(sender.getName(), target.getUniqueId(),
                                         target.getName(), currency.getId(), amount, newBalance);
                             });
@@ -483,22 +509,31 @@ public class CurrencyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleList(CommandSender sender) {
-        sender.sendMessage(TextUtils.colorize("&e&lLoaded Currencies:"));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.loaded-currencies-header",
+                "&e&lYüklü Para Birimleri:")));
         plugin.getCurrencyManager().getCurrencies().forEach((id, curr) -> {
             sender.sendMessage(TextUtils.colorize("&6- &f" + curr.getName() + " &7(" + id + ")"));
         });
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage(TextUtils.colorize("&e&l----- CreamCurrency -----"));
-        sender.sendMessage(TextUtils.colorize("&6/currency balance <type> [player]"));
-        sender.sendMessage(TextUtils.colorize("&6/currency pay <type> <player> <amount>"));
-        sender.sendMessage(TextUtils.colorize("&6/currency top <type>"));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.creamcurrency-header",
+                "&e&l----- CreamCurrency -----")));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.help.currency-balance",
+                "&6/currency balance <para_birimi> [oyuncu]")));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.help.currency-pay",
+                "&6/currency pay <para_birimi> <oyuncu> <miktar>")));
+        sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.help.currency-top",
+                "&6/currency top <para_birimi>")));
         if (sender.hasPermission("creamcurrency.admin")) {
-            sender.sendMessage(TextUtils.colorize("&6/currency give <type> <player> <amount>"));
-            sender.sendMessage(TextUtils.colorize("&6/currency set <type> <player> <amount>"));
-            sender.sendMessage(TextUtils.colorize("&6/currency remove <type> <player> <amount>"));
-            sender.sendMessage(TextUtils.colorize("&6/currency list"));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.help.currency-give",
+                    "&6/currency give <para_birimi> <oyuncu> <miktar>")));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.help.currency-set",
+                    "&6/currency set <para_birimi> <oyuncu> <miktar>")));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.help.currency-remove",
+                    "&6/currency remove <para_birimi> <oyuncu> <miktar>")));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.help.currency-list",
+                    "&6/currency list")));
         }
     }
 

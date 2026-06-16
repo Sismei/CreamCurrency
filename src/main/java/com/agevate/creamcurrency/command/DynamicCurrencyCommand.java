@@ -89,7 +89,8 @@ public class DynamicCurrencyCommand implements CommandExecutor, TabCompleter {
             case REMOVE -> handleRemove(sender, args, currency);
             case TOGGLE -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(TextUtils.colorize("&cOnly players can toggle payments."));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.only-players-toggle",
+                            "&cSadece oyuncular ödeme ayarlarını değiştirebilir.")));
                     return true;
                 }
                 handleToggle(player);

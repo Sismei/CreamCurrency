@@ -36,6 +36,9 @@ command-messages:
   top-header: "&e&l----- %currency% Sıralaması (İlk %limit%) -----"
   top-entry: "%color%#%rank% &f%player% &8- &a%balance%"
   top-empty: "&7Henüz veri bulunamadı."
+  top-loading: "&7Yükleniyor..."
+  top-total: "&7Toplam Ekonomi: &a%amount%"
+  top-page: "&7Sayfa: %page%"
   
   # Rank colors for top command
   top-colors:

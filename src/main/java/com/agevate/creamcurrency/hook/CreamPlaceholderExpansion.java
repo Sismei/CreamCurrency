@@ -78,7 +78,7 @@ public class CreamPlaceholderExpansion extends PlaceholderExpansion {
 
             Double cached = cache.get(player.getUniqueId(), currencyId);
             if (cached != null) {
-                return compactFormat.format(cached);
+                return String.valueOf(cached.longValue());
             }
 
             plugin.getPlayerDataDAO().getBalance(player.getUniqueId(), currencyId);

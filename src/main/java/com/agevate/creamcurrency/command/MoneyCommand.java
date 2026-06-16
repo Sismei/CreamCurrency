@@ -32,13 +32,15 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Currency primary = plugin.getCurrencyManager().getPrimaryCurrency();
         if (primary == null) {
-            sender.sendMessage(TextUtils.colorize("&cPrimary currency not configured."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.primary-currency-not-found",
+                    "&cBirincil para birimi yapılandırılmamış.")));
             return true;
         }
 
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage(TextUtils.colorize("&cConsole must specify a player."));
+                sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.console-not-allowed",
+                        "&cKonsol bir oyuncu belirtmelidir.")));
                 return true;
             }
             checkBalance(sender, player, primary);
@@ -54,7 +56,8 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(sub);
                 checkBalance(sender, target, primary);
             } else {
-                sender.sendMessage(TextUtils.colorize("&cUsage: /money or /money pay <player> <amount>"));
+                sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.money-usage",
+                        "&cKullanım: /money veya /money pay <oyuncu> <miktar>")));
             }
             return true;
         }
@@ -62,7 +65,8 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
         switch (matched) {
             case PAY -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(TextUtils.colorize("&cOnly players can pay."));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.only-players",
+                            "&cSadece oyuncular ödeme yapabilir.")));
                     return true;
                 }
                 handlePay(player, args, primary);
@@ -70,7 +74,8 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
             case TOP -> handleTop(sender, primary, args);
             case TOGGLE -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(TextUtils.colorize("&cOnly players can toggle payments."));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.only-players-toggle",
+                            "&cSadece oyuncular ödeme ayarlarını değiştirebilir.")));
                     return true;
                 }
                 handleToggle(player);
@@ -82,11 +87,13 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
                 } else if (sender instanceof Player player) {
                     checkBalance(sender, player, primary);
                 } else {
-                    sender.sendMessage(TextUtils.colorize("&cConsole must specify a player."));
+                    sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.console-not-allowed",
+                            "&cKonsol bir oyuncu belirtmelidir.")));
                 }
             }
             default ->
-                sender.sendMessage(TextUtils.colorize("&cUsage: /money balance or /money pay <player> <amount>"));
+                sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.money-usage-full",
+                        "&cKullanım: /money balance veya /money pay <oyuncu> <miktar>")));
         }
 
         return true;
@@ -119,7 +126,8 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length < 3) {
-            sender.sendMessage(TextUtils.colorize("&cUsage: /money pay <player> <amount>"));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.pay-usage",
+                    "&cKullanım: /%currency% pay <oyuncu> <miktar>").replace("%currency%", "money")));
             return;
         }
 
@@ -138,7 +146,8 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (target.getUniqueId().equals(sender.getUniqueId())) {
-            sender.sendMessage(TextUtils.colorize("&cYou cannot pay yourself."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.cannot-pay-self",
+                    "&cKendine ödeme yapamazsın.")));
             return;
         }
 
@@ -146,12 +155,14 @@ public class MoneyCommand implements CommandExecutor, TabCompleter {
         try {
             amount = NumberUtils.parseAmount(args[2]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(TextUtils.colorize("&cInvalid amount."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.invalid-amount",
+                    "&cGeçersiz miktar.")));
             return;
         }
 
         if (amount <= 0) {
-            sender.sendMessage(TextUtils.colorize("&cAmount must be positive."));
+            sender.sendMessage(TextUtils.colorize(plugin.getConfig().getString("messages.amount-positive",
+                    "&cMiktar pozitif olmalıdır.")));
             return;
         }
 
